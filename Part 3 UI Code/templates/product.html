@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Details</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Product Details</h1>
+        {% if product %}
+            <div class="product">
+                <h2>{{ product.name }}</h2>
+                <p class="product-description">{{ product.description }}</p>
+                <p class="product-price">Price: ${{ product.price }}</p>
+            </div>
+        {% else %}
+            <p class="error-message">Product not found</p>
+        {% endif %}
+        <a href="{{ url_for('get_products') }}">Back to Product List</a>
+    </div>
+</body>
+</html>

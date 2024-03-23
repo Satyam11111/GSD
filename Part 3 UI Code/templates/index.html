@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>E-Commerce Application</h1>
+           <!-- Add a search form -->
+           <form id="search-form">
+            <label for="search">Search:</label>
+            <input type="text" id="search" name="search" required />
+            <button type="submit">Search</button>
+          </form>
+      
+          <!-- Display search results -->
+          <ul id="search-results">
+            <!-- Search results will be dynamically populated here -->
+          </ul>
+          
+    <form id="product-form">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" min="0" step="0.01" required>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+        <button type="submit">Add Product</button>
+    </form>
+    <ul id="product-list">
+        {% for product in products %}
+        <li>
+            {{ product.name }} - Price: ${{ product.price }} - {{ product.description }}
+            <button class="add-to-cart-btn" data-product-id="{{ product.id }}">Add to Cart</button>
+        </li>
+        {% endfor %}
+    </ul>
+    <button id="view-cart-btn">View Cart</button>
+    <ul id="cart-list" style="display: none;"></ul>
+    <p id="total-amount" style="display: none;"></p>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

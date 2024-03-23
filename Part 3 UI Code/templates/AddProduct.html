@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Product List</h1>
+        <button id="addProductButton">Add Product</button>
+        <div id="addProductForm" style="display: none;">
+            <h2>Add a New Product</h2>
+            <form id="productForm">
+                <label for="name">Product Name:</label>
+                <input type="text" id="name" required>
+                <br>
+                <label for="price">Product Price:</label>
+                <input type="number" id="price" step="0.01" required>
+                <br>
+                <label for="description">Product Description:</label>
+                <textarea id="description" required></textarea>
+                <br>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+        <table>
+            <!-- Your table content here... -->
+        </table>
+    </div>
+
+    <script>
+        // JavaScript code to show/hide the add product form
+        const addProductButton = document.getElementById('addProductButton');
+        const addProductForm = document.getElementById('addProductForm');
+
+        addProductButton.addEventListener('click', function() {
+            if (addProductForm.style.display === 'none') {
+                addProductForm.style.display = 'block';
+            } else {
+                addProductForm.style.display = 'none';
+            }
+        });
+
+        // JavaScript code to handle the form submission
+        const productForm = document.getElementById('productForm');
+
+        productForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const price = parseFloat(document.getElementById('price').value);
+            const description = document.getElementById('description').value;
+
+            const newProduct = {
+                name: name,
+                price: price,
+                description: description
+            };
+
+            fetch('/add_product', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newProduct)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Product added successfully:', data);
+            })
+            .catch(error => {
+                console.error('Failed to add the product:', error);
+            });
+        });
+    </script>
+</body>
+</html>
