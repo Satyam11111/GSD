@@ -1,5 +1,7 @@
-import { hashPassword } from "../helpers/authHelper.js";
+import { comparePassword, hashPassword } from "../helpers/authHelper.js";
 import userModel from "../models/userModel.js";
+import jwt from "jsonwebtoken";
+
 export const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address } = req.body;
@@ -36,4 +38,45 @@ export const registerController = async (req, res) => {
   }
 };
 
-// export default { registerController };
+//login logic
+export const loginController = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    //validation
+    if (!email || !password) {
+      return res.status(400).json({ message: "Please fill in all fields" });
+    }
+
+    //check user
+    const user = await userModel.findOne({ email });
+
+    //no user
+    if (!user) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    const match = await comparePassword(password, user.password);
+    if (!match) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    //create token
+    const token = await jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+    //response
+    res.status(200).send({
+      token,
+      message: "Login successful",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+      },
+      success: true,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error in login process" });
+  }
+};
