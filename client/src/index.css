@@ -3,3 +3,23 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.active {
+  border-bottom: 2px solid black;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  leter-spacing: 3px;
+}
+
+/* register page */
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  flex-direction: column;
+  background-color: #f1f1f1;
+}

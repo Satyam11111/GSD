@@ -8,14 +8,17 @@ export const registerController = async (req, res) => {
 
     //validation
     if (!name || !email || !password || !phone || !address) {
-      return res.status(400).json({ message: "Please fill in all fields" });
+      return res.status(400).send({ message: "Please fill in all fields" });
     }
 
     //check user
     const user = await userModel.findOne({ email });
     //exisiting user
     if (user) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(200).send({
+        message: "User already exists",
+        success: false,
+      });
     }
 
     //register user
