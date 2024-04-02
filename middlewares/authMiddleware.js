@@ -20,10 +20,6 @@ export const requireSignIn = async (req, res, next) => {
 //admin access
 export const isAdmin = async (req, res, next) => {
   try {
-    // const verified = jwt.verify(
-    //   req.headers.authorization,
-    //   process.env.JWT_SECRET
-    // );
     const user = await userModel.findById(req.user._id);
     if (user.role !== 1) {
       console.log("not an admin: clg");

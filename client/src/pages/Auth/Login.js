@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [auth, setAuth] = useAuth();
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -34,7 +34,7 @@ const Login = () => {
         });
         localStorage.setItem("auth", JSON.stringify(res.data));
 
-        navigate("/");
+        navigate(location.state || "/");
       } else {
         toast.error(res.data.message);
       }
